@@ -11,17 +11,12 @@
     become: true
     pacman: name={{ item }}
     with_items:
-      - ansible
       - git
       - openssh
       - tig
-      - lightdm-gtk-greeter
-      - xorg
-      - i3
       - rofi
       - dmenu
       - zsh
-      - rxvt-unicode
       - tmux
       - chromium
       - pepper-flash

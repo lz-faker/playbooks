@@ -1,0 +1,30 @@
+---
+
+- hosts: localhost
+  remote_user: root
+  connection: local
+
+  vars:
+    password: /
+    ansible_become_pass: /
+
+  tasks:
+  - name: Allow 'wheel' group to have passwordless sudo
+    become: true
+    lineinfile:
+      dest: /etc/sudoers
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) ALL'
+
+  - name: add user
+    become: true
+    user: name=linze password={{ password | password_hash('sha512') }} groups=wheel update_password=on_create
+
+  - name: install packages
+    become: true
+    pacman: name={{ item }}
+    with_items:
+      - lightdm-gtk-greeter
+      - xorg
+      - i3
+      - rxvt-unicode
