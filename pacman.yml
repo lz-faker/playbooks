@@ -11,6 +11,10 @@
     become: true
     pacman: name={{ item }}
     with_items:
+      - lightdm-gtk-greeter
+      - xorg
+      - i3
+      - rxvt-unicode
       - git
       - openssh
       - tig

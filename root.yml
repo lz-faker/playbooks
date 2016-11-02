@@ -7,6 +7,7 @@
   vars:
     password: /
     ansible_become_pass: /
+    username: diartyz
 
   tasks:
   - name: Allow 'wheel' group to have passwordless sudo
@@ -18,13 +19,4 @@
 
   - name: add user
     become: true
-    user: name=linze password={{ password | password_hash('sha512') }} groups=wheel update_password=on_create
-
-  - name: install packages
-    become: true
-    pacman: name={{ item }}
-    with_items:
-      - lightdm-gtk-greeter
-      - xorg
-      - i3
-      - rxvt-unicode
+    user: name={{ username }} password={{ password | password_hash('sha512') }} groups=wheel update_password=on_create
