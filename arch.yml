@@ -23,7 +23,7 @@
     git: repo={{ item.repo }} dest={{ item.dest }} update=no
     with_items:
       - { repo: 'git@github.com:lz-faker/dot-files.git', dest: "~/{{ coding_folder }}/dot-files" }
-      - { repo: 'git@github.com:lz-faker/playbook.git', dest: "~/{{ coding_folder }}/playbook" }
+      - { repo: 'git@github.com:lz-faker/playbooks.git', dest: "~/{{ coding_folder }}/playbooks" }
 
   - name: create soft links
     file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
@@ -31,6 +31,7 @@
       - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.vimrc }
       - { src: "~/{{ coding_folder }}/dot-files/.zshrc", dest: ~/.zshrc }
       - { src: "~/{{ coding_folder }}/dot-files/.tmux.conf", dest: ~/.tmux.conf }
+      - { src: "~/{{ coding_folder }}/dot-files/..xprofile", dest: ~/.xprofile }
       - { src: "~/{{ coding_folder }}/dot-files/.Xresources", dest: ~/.Xresources }
       - { src: "~/{{ coding_folder }}/dot-files/i3", dest: ~/.config/i3 }
 
