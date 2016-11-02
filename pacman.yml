@@ -1,0 +1,46 @@
+---
+
+- hosts: localhost
+  connection: local
+
+  vars:
+    - ansible_become_pass: /
+
+  tasks:
+  - name: install packages (sudo)
+    become: true
+    pacman: name={{ item }}
+    with_items:
+      - ansible
+      - git
+      - openssh
+      - tig
+      - lightdm-gtk-greeter
+      - xorg
+      - i3
+      - rofi
+      - dmenu
+      - zsh
+      - rxvt-unicode
+      - tmux
+      - chromium
+      - pepper-flash
+      - shadowsocks
+      - proxychains-ng
+      - privoxy
+      - linux-headers
+      - broadcom-wl-dkms
+      - gvim
+      - python-neovim
+      - autojump
+      - feh
+      - xclip
+      - unarchiver
+      - the_silver_searcher
+      - mitmproxy
+      - mplayer
+      - thunar
+      - ttf-monaco
+      - ttf-inconsolata
+      - wqy-microhei
+      - ibus-rime

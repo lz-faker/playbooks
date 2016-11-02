@@ -1,0 +1,97 @@
+---
+
+- hosts: localhost
+  connection: local
+
+  vars:
+    ansible_become_pass: /
+
+  tasks:
+  - name: set coding_folder
+    set_fact:
+      coding_folder: "Faker"
+      username: 'diartyz'
+    when: ansible_user == 'diartyz'
+
+  - name: set coding_folder
+    set_fact:
+      coding_folder: "Coding"
+      username: 'linze'
+    when: ansible_user == 'linze'
+
+  - name: git repos
+    git: repo={{ item.repo }} dest={{ item.dest }} update=no
+    with_items:
+      - { repo: 'git@github.com:lz-faker/dot-files.git', dest: "~/{{ coding_folder }}/dot-files" }
+      - { repo: 'git@github.com:lz-faker/playbook.git', dest: "~/{{ coding_folder }}/playbook" }
+
+  - name: create soft links
+    file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
+    with_items:
+      - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.vimrc }
+      - { src: "~/{{ coding_folder }}/dot-files/.zshrc", dest: ~/.zshrc }
+      - { src: "~/{{ coding_folder }}/dot-files/.tmux.conf", dest: ~/.tmux.conf }
+      - { src: "~/{{ coding_folder }}/dot-files/.Xresources", dest: ~/.Xresources }
+      - { src: "~/{{ coding_folder }}/dot-files/i3", dest: ~/.config/i3 }
+
+  - name: create soft links (sudo)
+    become: true
+    file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
+    with_items:
+      - { src: /usr/share/zoneinfo/Asia/Shanghai, dest: /etc/localtime }
+
+  - name: update privoxy config
+    become: true
+    lineinfile:
+      dest: /etc/privoxy/config
+      line: 'actionsfile pac.action'
+
+  - name: update proxychains config
+    become: true
+    lineinfile:
+      dest: /etc/proxychains.conf
+      line: 'socks5	127.0.0.1 1080'
+
+  - name: copy files (sudo)
+    become: true
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/pac.action', dest: /etc/privoxy/pac.action }
+      - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/shadowsocks.json', dest: /etc/shadowsocks/shadowsocks.json }
+
+  - name: install fonts (sudo)
+    become: true
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: ~/Coding/ansible/vars/DejaVuSansMono, dest: /usr/share/fonts }
+
+  - name: refresh fonts cache
+    shell: fc-cache
+
+  - name: git config
+    git_config: name={{ item.name }} value={{ item.value }} scope=global
+    with_items:
+      - { name: user.name, value: 'diartyz' }
+      - { name: user.email, value: 'diartyz@gmail.com' }
+    when: ansible_user == 'diartyz'
+
+  - name: git config
+    git_config: name={{ item.name }} value={{ item.value }} scope=global
+    with_items:
+      - { name: user.name, value: 'linze' }
+      - { name: user.email, value: 'linze.faker@gmail.com' }
+    when: ansible_user == 'linze'
+
+  - name: enable systemd units (sudo)
+    become: true
+    systemd: name={{ item }} state=started enabled=yes
+    with_items:
+      - lightdm
+      - privoxy
+      - shadowsocks@shadowsocks
+
+  - name: download bg image (sudo)
+    become: true
+    get_url:
+      url: http://7u2lvs.com1.z0.glb.clouddn.com/all.jpg
+      dest: /usr/share/pixmaps/background.jpg
