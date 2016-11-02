@@ -19,4 +19,8 @@
 
   - name: add user
     become: true
-    user: name={{ username }} password={{ password | password_hash('sha512') }} groups=wheel update_password=on_create
+    user:
+      name: "{{ username }}"
+      password: "{{ password | password_hash('sha512') }}"
+      groups: wheel
+      update_password: on_create
