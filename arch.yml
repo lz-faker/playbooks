@@ -29,6 +29,7 @@
     file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
     with_items:
       - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.vimrc }
+      - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.config/nvim/init.vim }
       - { src: "~/{{ coding_folder }}/dot-files/.zshrc", dest: ~/.zshrc }
       - { src: "~/{{ coding_folder }}/dot-files/.tmux.conf", dest: ~/.tmux.conf }
       - { src: "~/{{ coding_folder }}/dot-files/..xprofile", dest: ~/.xprofile }
@@ -60,15 +61,6 @@
       - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/pac.action', dest: /etc/privoxy/pac.action }
       - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/shadowsocks.json', dest: /etc/shadowsocks/shadowsocks.json }
 
-  - name: install fonts (sudo)
-    become: true
-    copy: src={{ item.src }} dest={{ item.dest }}
-    with_items:
-      - { src: ~/Coding/ansible/vars/DejaVuSansMono, dest: /usr/share/fonts }
-
-  - name: refresh fonts cache
-    shell: fc-cache
-
   - name: git config
     git_config: name={{ item.name }} value={{ item.value }} scope=global
     with_items:
@@ -96,3 +88,12 @@
     get_url:
       url: http://7u2lvs.com1.z0.glb.clouddn.com/all.jpg
       dest: /usr/share/pixmaps/background.jpg
+
+  - name: install fonts (sudo)
+    become: true
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: "~/{{ coding_folder }}/playbooks/vars/DejaVuSansMono", dest: /usr/share/fonts }
+
+  - name: refresh fonts cache
+    shell: fc-cache
