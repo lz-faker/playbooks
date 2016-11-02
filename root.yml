@@ -7,7 +7,7 @@
   vars:
     password: /
     ansible_become_pass: /
-    username: diartyz
+    username: linze
 
   tasks:
   - name: Allow 'wheel' group to have passwordless sudo

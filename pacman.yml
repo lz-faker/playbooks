@@ -7,6 +7,15 @@
     - ansible_become_pass: /
 
   tasks:
+  - name: add pacman config
+    become: true
+    blockinfile:
+      dest: /etc/pacman.conf
+      block: |
+        [archlinuxfr]
+        SigLevel = Never
+        Server = http://repo.archlinux.fr/$arch
+
   - name: install packages (sudo)
     become: true
     pacman: name={{ item }}
@@ -34,7 +43,6 @@
       - autojump
       - feh
       - xclip
-      - unarchiver
       - the_silver_searcher
       - mitmproxy
       - mplayer

@@ -19,8 +19,13 @@
       username: 'linze'
     when: ansible_user == 'linze'
 
+  - name: create folders
+    file: path={{ item }} state=directory
+    with_items:
+      - ~/.config/nvim
+
   - name: git repos
-    git: repo={{ item.repo }} dest={{ item.dest }} update=no
+    git: repo={{ item.repo }} dest={{ item.dest }} update=no accept_hostkey=yes
     with_items:
       - { repo: 'git@github.com:lz-faker/dot-files.git', dest: "~/{{ coding_folder }}/dot-files" }
       - { repo: 'git@github.com:lz-faker/playbooks.git', dest: "~/{{ coding_folder }}/playbooks" }
@@ -32,7 +37,7 @@
       - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.config/nvim/init.vim }
       - { src: "~/{{ coding_folder }}/dot-files/.zshrc", dest: ~/.zshrc }
       - { src: "~/{{ coding_folder }}/dot-files/.tmux.conf", dest: ~/.tmux.conf }
-      - { src: "~/{{ coding_folder }}/dot-files/..xprofile", dest: ~/.xprofile }
+      - { src: "~/{{ coding_folder }}/dot-files/.xprofile", dest: ~/.xprofile }
       - { src: "~/{{ coding_folder }}/dot-files/.Xresources", dest: ~/.Xresources }
       - { src: "~/{{ coding_folder }}/dot-files/i3", dest: ~/.config/i3 }
 
