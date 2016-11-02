@@ -1,1 +1,1 @@
-ansible-playbook key.yml --ask-vault-pass
+ansible-playbook arch.yml --ask-vault-pass

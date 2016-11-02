@@ -1,6 +1,54 @@
 ---
 
 - hosts: localhost
+  remote_user: root
+  connection: local
+
+  vars:
+    password: /
+    ansible_become_pass: /
+    username: linze
+
+  tasks:
+  - name: Allow 'wheel' group to have passwordless sudo
+    become: true
+    lineinfile:
+      dest: /etc/sudoers
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) ALL'
+
+  - name: add user
+    become: true
+    user:
+      name: "{{ username }}"
+      password: "{{ password | password_hash('sha512') }}"
+      groups: wheel
+      update_password: on_create
+
+- hosts: localhost
+  connection: local
+
+  vars_files:
+    - vars/key.yml
+
+  tasks:
+  - name: create 755 folder
+    file: path={{ item }} state=directory mode=0755
+    with_items:
+      - ~/.ssh
+
+  - name: copy private key
+    copy:
+      content: '{{ private_key }}'
+      dest: ~/.ssh/id_rsa
+      mode: 0600
+
+  - name: copy public key
+    copy:
+      content: '{{ public_key }}'
+      dest: ~/.ssh/id_rsa.pub
+
+- hosts: localhost
   connection: local
 
   vars:
