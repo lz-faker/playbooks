@@ -12,8 +12,12 @@
     blockinfile:
       dest: /etc/pacman.conf
       block: |
+        [archlinuxcn]
+        SigLevel = Optional TrustAll
+        Server = http://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
+
         [archlinuxfr]
-        SigLevel = Never
+        SigLevel = Optional TrustAll
         Server = http://repo.archlinux.fr/$arch
 
   - name: install packages (sudo)
