@@ -1,7 +1,6 @@
 ---
 
 - hosts: localhost
-  remote_user: root
   connection: local
 
   vars:
@@ -10,6 +9,14 @@
     username: linze
 
   tasks:
+  - name: get ssh keys
+    include_vars: key.yml
+    when: ansible_user == 'linze'
+
+  - name: get ssh keys
+    include_vars: diartyz.yml
+    when: ansible_user == 'diartyz'
+
   - name: Allow 'wheel' group to have passwordless sudo
     become: true
     lineinfile:
@@ -20,18 +27,11 @@
   - name: add user
     become: true
     user:
-      name: "{{ username }}"
-      password: "{{ password | password_hash('sha512') }}"
+      name: '{{ username }}'
+      password: '{{ password | password_hash("sha512") }}'
       groups: wheel
       update_password: on_create
 
-- hosts: localhost
-  connection: local
-
-  vars_files:
-    - vars/key.yml
-
-  tasks:
   - name: create 755 folder
     file: path={{ item }} state=directory mode=0755
     with_items:
@@ -48,22 +48,15 @@
       content: '{{ public_key }}'
       dest: ~/.ssh/id_rsa.pub
 
-- hosts: localhost
-  connection: local
-
-  vars:
-    ansible_become_pass: /
-
-  tasks:
   - name: set coding_folder
     set_fact:
-      coding_folder: "Faker"
+      coding_folder: 'Faker'
       username: 'diartyz'
     when: ansible_user == 'diartyz'
 
   - name: set coding_folder
     set_fact:
-      coding_folder: "Coding"
+      coding_folder: 'Coding'
       username: 'linze'
     when: ansible_user == 'linze'
 
@@ -75,19 +68,19 @@
   - name: git repos
     git: repo={{ item.repo }} dest={{ item.dest }} update=no accept_hostkey=yes
     with_items:
-      - { repo: 'git@github.com:lz-faker/dot-files.git', dest: "~/{{ coding_folder }}/dot-files" }
-      - { repo: 'git@github.com:lz-faker/playbooks.git', dest: "~/{{ coding_folder }}/playbooks" }
+      - { repo: 'git@github.com:lz-faker/dot-files.git', dest: '~/{{ coding_folder }}/dot-files' }
+      - { repo: 'git@github.com:lz-faker/playbooks.git', dest: '~/{{ coding_folder }}/playbooks' }
 
   - name: create soft links
     file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
     with_items:
-      - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.vimrc }
-      - { src: "~/{{ coding_folder }}/dot-files/.vimrc", dest: ~/.config/nvim/init.vim }
-      - { src: "~/{{ coding_folder }}/dot-files/.zshrc", dest: ~/.zshrc }
-      - { src: "~/{{ coding_folder }}/dot-files/.tmux.conf", dest: ~/.tmux.conf }
-      - { src: "~/{{ coding_folder }}/dot-files/.xprofile", dest: ~/.xprofile }
-      - { src: "~/{{ coding_folder }}/dot-files/.Xresources", dest: ~/.Xresources }
-      - { src: "~/{{ coding_folder }}/dot-files/i3", dest: ~/.config/i3 }
+      - { src: '~/{{ coding_folder }}/dot-files/.vimrc', dest: ~/.vimrc }
+      - { src: '~/{{ coding_folder }}/dot-files/.vimrc', dest: ~/.config/nvim/init.vim }
+      - { src: '~/{{ coding_folder }}/dot-files/.zshrc', dest: ~/.zshrc }
+      - { src: '~/{{ coding_folder }}/dot-files/.tmux.conf', dest: ~/.tmux.conf }
+      - { src: '~/{{ coding_folder }}/dot-files/.xprofile', dest: ~/.xprofile }
+      - { src: '~/{{ coding_folder }}/dot-files/.Xresources', dest: ~/.Xresources }
+      - { src: '~/{{ coding_folder }}/dot-files/i3', dest: ~/.config/i3 }
 
   - name: create soft links (sudo)
     become: true
@@ -146,7 +139,7 @@
     become: true
     copy: src={{ item.src }} dest={{ item.dest }}
     with_items:
-      - { src: "~/{{ coding_folder }}/playbooks/vars/DejaVuSansMono", dest: /usr/share/fonts }
+      - { src: '~/{{ coding_folder }}/playbooks/vars/DejaVuSansMono', dest: /usr/share/fonts }
 
   - name: refresh fonts cache
     shell: fc-cache
