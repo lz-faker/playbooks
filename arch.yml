@@ -29,7 +29,7 @@
     user:
       name: '{{ username }}'
       password: '{{ password | password_hash("sha512") }}'
-      groups: wheel
+      groups: wheel,autologin
       update_password: on_create
 
   - name: create 755 folder
