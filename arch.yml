@@ -134,6 +134,7 @@
     with_items:
       - lightdm
       - privoxy
+      - wicd
       - shadowsocks@shadowsocks
 
   - name: download bg image (sudo)

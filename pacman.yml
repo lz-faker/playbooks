@@ -55,6 +55,7 @@
       - ttf-inconsolata
       - wqy-microhei
       - ibus-rime
+      - wicd-gtk
       - netease-cloud-music
       - pavucontrol
       - pulseaudio
