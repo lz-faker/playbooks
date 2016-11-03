@@ -55,3 +55,9 @@
       - ttf-inconsolata
       - wqy-microhei
       - ibus-rime
+      - netease-cloud-music
+      - pavucontrol
+      - pulseaudio
+      - yaourt
+      # - unarchiver
+      # - kbdlight

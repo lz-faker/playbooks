@@ -107,6 +107,13 @@
       - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/pac.action', dest: /etc/privoxy/pac.action }
       - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/shadowsocks.json', dest: /etc/shadowsocks/shadowsocks.json }
 
+  - name: copy files (sudo)
+    become: true
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: '/home/{{ username }}/{{ coding_folder }}/dot-files/lightdm.conf', dest: /etc/lightdm/lightdm.conf }
+    when: ansible_user == 'linze'
+
   - name: git config
     git_config: name={{ item.name }} value={{ item.value }} scope=global
     with_items:
