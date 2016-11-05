@@ -135,6 +135,7 @@
       - lightdm
       - privoxy
       - wicd
+      - bluetooth
       - shadowsocks@shadowsocks
 
   - name: download bg image (sudo)

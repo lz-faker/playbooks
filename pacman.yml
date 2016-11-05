@@ -59,6 +59,7 @@
       - netease-cloud-music
       - pavucontrol
       - pulseaudio
+      - blueberry
       - yaourt
       # - unarchiver
       # - kbdlight
