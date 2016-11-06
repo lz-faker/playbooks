@@ -60,6 +60,7 @@
       - pavucontrol
       - pulseaudio
       - blueberry
+      - htop
       - yaourt
       # - unarchiver
       # - kbdlight
