@@ -136,6 +136,7 @@
       - privoxy
       - wicd
       - shadowsocks@shadowsocks
+      - usbmuxd
 
   - name: download bg image (sudo)
     become: true

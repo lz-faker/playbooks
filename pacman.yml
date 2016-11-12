@@ -59,6 +59,7 @@
       - netease-cloud-music
       - pavucontrol
       - pulseaudio
+      - usbmuxd
       - yaourt
       # - unarchiver
       # - kbdlight
