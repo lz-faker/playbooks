@@ -135,6 +135,7 @@
       - lightdm
       - privoxy
       - wicd
+      - bluetooth
       - shadowsocks@shadowsocks
       - usbmuxd
 

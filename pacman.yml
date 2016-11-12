@@ -59,6 +59,8 @@
       - netease-cloud-music
       - pavucontrol
       - pulseaudio
+      - blueberry
+      - htop
       - usbmuxd
       - yaourt
       # - unarchiver
