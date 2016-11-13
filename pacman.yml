@@ -63,6 +63,7 @@
       - htop
       - usbmuxd
       - android-udev
+      - arandr
       - yaourt
       # - unarchiver
       # - kbdlight
