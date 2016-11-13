@@ -62,6 +62,7 @@
       - blueberry
       - htop
       - usbmuxd
+      - android-udev
       - yaourt
       # - unarchiver
       # - kbdlight
