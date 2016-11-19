@@ -43,6 +43,7 @@
       - linux-headers
       - broadcom-wl-dkms
       - gvim
+      - lua
       - python-neovim
       - autojump
       - feh
