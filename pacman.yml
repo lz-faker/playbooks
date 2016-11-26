@@ -66,5 +66,6 @@
       - android-udev
       - arandr
       - yaourt
+      # - bcwc-pcie-dkms
       # - unarchiver
       # - kbdlight
