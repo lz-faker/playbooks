@@ -1,0 +1,15 @@
+---
+- name: create ssh folder
+  file: path=~/.ssh state=directory mode=0755
+
+- name: copy private key
+  copy:
+    content: '{{ private_key }}'
+    dest: ~/.ssh/id_rsa
+    mode: 0600
+
+- name: copy public key
+  copy:
+    content: '{{ public_key }}'
+    dest: ~/.ssh/id_rsa.pub
+

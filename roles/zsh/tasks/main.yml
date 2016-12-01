@@ -1,0 +1,9 @@
+---
+- name: copy files
+  copy: src=~/.oh-my-zsh/templates/zshrc.zsh-template dest=~/.zshrc
+
+- name: update user
+  become: true
+  user:
+    name: '{{ ansible_user }}'
+    shell: /bin/zsh

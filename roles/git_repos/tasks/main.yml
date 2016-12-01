@@ -1,0 +1,8 @@
+---
+- name: clone git repos
+  git: repo={{ item.repo }} dest={{ item.dest }} update=no accept_hostkey=yes
+  with_items:
+    - { repo: 'git@github.com:lz-faker/dot-files.git', dest: '~/Coding/dot-files' }
+    - { repo: 'git@github.com:lz-faker/playbooks.git', dest: '~/Coding/playbooks' }
+    - { repo: 'git://github.com/robbyrussell/oh-my-zsh.git', dest: '~/.oh-my-zsh' }
+
