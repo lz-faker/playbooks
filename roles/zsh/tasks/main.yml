@@ -1,6 +1,6 @@
 ---
-- name: copy files
-  copy: src=~/.oh-my-zsh/templates/zshrc.zsh-template dest=~/.zshrc
+- name: create soft links
+  file: src=~/Coding/dot-files/.zshrc dest=~/.zshrc state=link force=yes
 
 - name: update user
   become: true

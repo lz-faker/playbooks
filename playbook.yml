@@ -3,6 +3,7 @@
   vars:
     ansible_become_pass: /
   roles:
+    - yum
     - ssh_keys
     - git
     - git_repos
