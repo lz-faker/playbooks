@@ -1,0 +1,9 @@
+---
+- name: create soft links
+  file: src=~/Coding/dot-files/.zshrc dest=~/.zshrc state=link force=yes
+
+- name: update user
+  become: true
+  user:
+    name: '{{ ansible_user }}'
+    shell: /bin/zsh
