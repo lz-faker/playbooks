@@ -1,0 +1,91 @@
+---
+
+- hosts: localhost
+  connection: local
+
+  vars:
+    password: /
+    ansible_become_pass: /
+    username: diartyz
+    coding_folder: 'Coding'
+
+  tasks:
+  - name: install package
+    yum: name={{ item }}
+    with_items:
+      - zsh
+      - git
+      - sudo
+
+  - name: install package
+    easy_install: name={{ item }}
+    with_items:
+      - pip
+
+  - name: install package
+    pip: name={{ item }}
+    with_items:
+      - shadowsocks
+
+  - name: clone git repos
+    git: repo={{ item.repo }} dest={{ item.dest }} update=no accept_hostkey=yes
+    with_items:
+      - { repo: 'git://github.com/lz-faker/dot-files.git', dest: '~/{{ coding_folder }}/dot-files' }
+      - { repo: 'git://github.com/lz-faker/playbooks.git', dest: '~/{{ coding_folder }}/playbooks' }
+      - { repo: 'git://github.com/robbyrussell/oh-my-zsh.git', dest: '~/.oh-my-zsh' }
+
+  - name: createfolder
+    file: path={{ item }} state=directory
+    with_items:
+      - ~/.ssh
+      - /etc/shadowsocks
+
+  - name: copy files
+    copy: src={{ item.src }} dest={{ item.dest }}
+    with_items:
+      - { src: '~/{{ coding_folder }}/dot-files/shadowsocks/shadowsocks.json', dest: /etc/shadowsocks.json }
+      - { src: '~/{{ coding_folder }}/dot-files/shadowsocks/shadowsocks.service', dest: /etc/systemd/system/shadowsocks.service }
+
+  - name: update user
+    user:
+      name: root
+      shell: /bin/zsh
+
+  - name: Allow 'wheel' group to have passwordless sudo
+    become: true
+    lineinfile:
+      dest: /etc/sudoers
+      regexp: '^%wheel'
+      line: '%wheel ALL=(ALL) ALL'
+
+  - name: disable paddword login
+    become: true
+    lineinfile:
+      dest: /etc/sudoers
+      regexp: 'PasswordAuthentication'
+      line: 'PasswordAuthentication no'
+
+  - name: add user
+    become: true
+    user:
+      name: '{{ username }}'
+      password: '{{ password | password_hash("sha512") }}'
+      groups: wheel
+      update_password: on_create
+
+  - name: create soft links
+    file: src={{ item.src }} dest={{ item.dest }} state=link force=yes
+    with_items:
+      - { src: '~/{{ coding_folder }}/dot-files/.vimrc', dest: ~/.vimrc }
+      - { src: '~/{{ coding_folder }}/dot-files/.zshrc', dest: ~/.zshrc }
+
+  - name: git config
+    git_config: name={{ item.name }} value={{ item.value }} scope=global
+    with_items:
+      - { name: user.name, value: 'diartyz' }
+      - { name: user.email, value: 'diartyz@gmail.com' }
+
+  - name: enable systemd units
+    systemd: name={{ item }} state=started enabled=yes
+    with_items:
+      - shadowsocks
