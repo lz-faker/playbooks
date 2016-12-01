@@ -4,3 +4,4 @@
   with_items:
     - { name: user.name, value: 'diartyz' }
     - { name: user.email, value: 'diartyz@gmail.com' }
+    - { name: push.default, value: 'simple' }
