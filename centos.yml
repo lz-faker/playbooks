@@ -9,6 +9,9 @@
     username: diartyz
     coding_folder: 'Coding'
 
+  include_vars:
+    file: authorized.yml
+
   tasks:
   - name: install package
     yum: name={{ item }}
@@ -61,7 +64,7 @@
   - name: disable paddword login
     become: true
     lineinfile:
-      dest: /etc/sudoers
+      dest: /etc/ssh/sshd_config
       regexp: 'PasswordAuthentication'
       line: 'PasswordAuthentication no'
 
